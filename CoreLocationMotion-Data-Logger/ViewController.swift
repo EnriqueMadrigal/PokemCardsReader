@@ -548,8 +548,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let magnetometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
@@ -626,8 +626,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let barometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
                     let relativeAltitude = barometerData.relativeAltitude.doubleValue
                     let pressure = barometerData.pressure.doubleValue
                     
