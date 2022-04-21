@@ -508,8 +508,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let gyroData = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     //let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
                     let rawGyroDataZ = gyroData.rotationRate.z
@@ -547,8 +548,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let magnetometerData = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
