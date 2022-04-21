@@ -13,6 +13,7 @@
 		2EB6F609229E752D009915A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F607229E752D009915A4 /* Main.storyboard */; };
 		2EB6F60B229E752E009915A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F60A229E752E009915A4 /* Assets.xcassets */; };
 		2EB6F60E229E752E009915A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F60C229E752E009915A4 /* LaunchScreen.storyboard */; };
+		8889D9E72810772D000DBE9B /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8889D9E62810772D000DBE9B /* Haptics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		2EB6F60A229E752E009915A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2EB6F60D229E752E009915A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2EB6F60F229E752E009915A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8889D9E62810772D000DBE9B /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				2EB6F60C229E752E009915A4 /* LaunchScreen.storyboard */,
 				2EB6F60F229E752E009915A4 /* Info.plist */,
 				2E9DDE1A229F7805001F5B2C /* UsefulFunctions.swift */,
+				8889D9E62810772D000DBE9B /* Haptics.swift */,
 			);
 			path = "CoreLocationMotion-Data-Logger";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8889D9E72810772D000DBE9B /* Haptics.swift in Sources */,
 				2EB6F606229E752D009915A4 /* ViewController.swift in Sources */,
 				2E9DDE1B229F7805001F5B2C /* UsefulFunctions.swift in Sources */,
 				2EB6F604229E752D009915A4 /* AppDelegate.swift in Sources */,
@@ -287,7 +291,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RVXJ8FM9Z4;
+				DEVELOPMENT_TEAM = 6XSS4B484F;
 				INFOPLIST_FILE = "CoreLocationMotion-Data-Logger/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,7 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RVXJ8FM9Z4;
+				DEVELOPMENT_TEAM = 6XSS4B484F;
 				INFOPLIST_FILE = "CoreLocationMotion-Data-Logger/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

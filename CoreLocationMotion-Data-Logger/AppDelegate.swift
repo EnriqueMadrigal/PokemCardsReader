@@ -5,6 +5,7 @@
 //  Created by kimpyojin on 29/05/2019.
 //  Copyright © 2019 Pyojin Kim. All rights reserved.
 //
+// unceremoniously extended for haptic vibratory things 
 
 import UIKit
 

@@ -10,11 +10,38 @@ import UIKit
 import CoreLocation
 import CoreMotion
 import os.log
+import AudioToolbox
 
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
+}
+
+
+extension DispatchQueue {
+
+    static func background(delay: Double = 0.0, background: (()->Void)? = nil, completion: (() -> Void)? = nil) {
+        DispatchQueue.global(qos: .background).async {
+            background?()
+            if let completion = completion {
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
+                    completion()
+                })
+            }
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+private var hapticManager: HapticManager?
+
+@available(iOS 13.0, *)
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // cellphone screen UI outlet objects
     @IBOutlet weak var startStopButton: UIButton!
+    @IBOutlet weak var hapticsButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
     
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -42,6 +69,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var stepCounterLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
     
+    var hapticManager = HapticManager()
     
     // constants for collecting data
     let numSensor = 14
@@ -89,7 +117,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var fileURLs = [URL]()
     var fileNames: [String] = ["gyro.txt", "gyro_uncalib.txt", "acce.txt", "linacce.txt", "gravity.txt", "magnet.txt", "magnet_uncalib.txt", "game_rv.txt", "gps.txt", "step.txt", "heading.txt", "height.txt", "pressure.txt", "battery.txt"]
     
+    var i:Int = 1
+    var sum:Int = 0
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,7 +143,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
+    func craptics() {
+        while self.i < 200 {
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.hapticManager?.playSlice()
+            usleep(2000);
+            self.i+=1
+        }
+    }
     override func viewWillDisappear(_ animated: Bool) {
         locationManager.stopUpdatingLocation()
         customQueue.sync {
@@ -144,6 +193,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         UIApplication.shared.isIdleTimerDisabled = true
                     }
                     self.isRecording = true
+                     
+                           
+                    //Jim's amazing non-haptic haptics
+                    
+                    self.craptics()
+          
+
+                    
                 } else {
                     self.errorMsg(msg: "Failed to create the file")
                     return
@@ -212,7 +269,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // optional binding for safety
         if let latestLocation = manager.location {
-            let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
+            //let mystamp = Date().currentTimeMillis()
+            //let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
+            let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
             let latitude = latestLocation.coordinate.latitude
             let longitude = latestLocation.coordinate.longitude
             let horizontalAccuracy = latestLocation.horizontalAccuracy
@@ -271,15 +330,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         motionManager.gyroUpdateInterval = 1.0 / sampleFrequency
         motionManager.magnetometerUpdateInterval = 1.0 / sampleFrequency
         
-        
         // 1) update device motion
         if (!motionManager.isDeviceMotionActive) {
             motionManager.startDeviceMotionUpdates(using: .xMagneticNorthZVertical, to: OperationQueue.main) { (motion: CMDeviceMotion?, error: Error?) in
                 
                 // optional binding for safety
                 if let deviceMotion = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
+                    let mystamp = Date().currentTimeMillis()
                     let deviceOrientationRx = deviceMotion.attitude.pitch
                     let deviceOrientationRy = deviceMotion.attitude.roll
                     let deviceOrientationRz = deviceMotion.attitude.yaw
@@ -324,7 +383,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the device orientation expressed in the quaternion format
                             let attitudeData = String(format: "%.0f %.6f %.6f %.6f %.6f \n",
-                                                      timestamp,
+                                                     // timestamp,
+                                                      mystamp,
                                                       deviceOrientationQx,
                                                       deviceOrientationQy,
                                                       deviceOrientationQz,
@@ -349,7 +409,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the current gravity vector
                             let gravityData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                     timestamp,
+                                                    // timestamp,
+                                                     mystamp,
                                                      gravityGx,
                                                      gravityGy,
                                                      gravityGz)
@@ -361,7 +422,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the user-generated acceleration vector (without gravity)
                             let userAccelData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                       timestamp,
+                                                       // timestamp,
+                                                       mystamp,
                                                        userAccelDataX,
                                                        userAccelDataY,
                                                        userAccelDataZ)
@@ -373,7 +435,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the current magnetic field vector
                             let magneticData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                      timestamp,
+                                                    //  timestamp,
+                                                      mystamp,
                                                       magneticFieldX,
                                                       magneticFieldY,
                                                       magneticFieldZ)
@@ -385,7 +448,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the heading angle (degrees) relative to the reference frame
                             let headingAngleData = String(format: "%.0f %.6f \n",
-                                                          timestamp,
+                                                        //  timestamp,
+                                                          mystamp,
                                                           deviceHeadingAngle)
                             if let headingAngleDataToWrite = headingAngleData.data(using: .utf8) {
                                 self.fileHandlers[self.HEADING_TXT].write(headingAngleDataToWrite)
@@ -405,8 +469,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let accelerometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
                     let rawAccelDataX = accelerometerData.acceleration.x * self.gravity
                     let rawAccelDataY = accelerometerData.acceleration.y * self.gravity
                     let rawAccelDataZ = accelerometerData.acceleration.z * self.gravity
@@ -444,8 +508,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let gyroData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
                     let rawGyroDataZ = gyroData.rotationRate.z
@@ -483,8 +547,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let magnetometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
