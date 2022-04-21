@@ -269,8 +269,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // optional binding for safety
         if let latestLocation = manager.location {
-            //let mystamp = Date().currentTimeMillis()
-            let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
+             let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
             //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
             let latitude = latestLocation.coordinate.latitude
             let longitude = latestLocation.coordinate.longitude
@@ -338,7 +337,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if let deviceMotion = motion {
                     //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
-                    let mystamp = Date().currentTimeMillis()
                     let deviceOrientationRx = deviceMotion.attitude.pitch
                     let deviceOrientationRy = deviceMotion.attitude.roll
                     let deviceOrientationRz = deviceMotion.attitude.yaw
@@ -383,8 +381,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the device orientation expressed in the quaternion format
                             let attitudeData = String(format: "%.0f %.6f %.6f %.6f %.6f \n",
-                                                     // timestamp,
-                                                      mystamp,
+                                                      timestamp,
                                                       deviceOrientationQx,
                                                       deviceOrientationQy,
                                                       deviceOrientationQz,
@@ -409,8 +406,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the current gravity vector
                             let gravityData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                    // timestamp,
-                                                     mystamp,
+                                                     timestamp,
                                                      gravityGx,
                                                      gravityGy,
                                                      gravityGz)
@@ -422,8 +418,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the user-generated acceleration vector (without gravity)
                             let userAccelData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                       // timestamp,
-                                                       mystamp,
+                                                       timestamp,
                                                        userAccelDataX,
                                                        userAccelDataY,
                                                        userAccelDataZ)
@@ -435,8 +430,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the current magnetic field vector
                             let magneticData = String(format: "%.0f %.6f %.6f %.6f \n",
-                                                    //  timestamp,
-                                                      mystamp,
+                                                      timestamp,
                                                       magneticFieldX,
                                                       magneticFieldY,
                                                       magneticFieldZ)
@@ -448,8 +442,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             
                             // the heading angle (degrees) relative to the reference frame
                             let headingAngleData = String(format: "%.0f %.6f \n",
-                                                        //  timestamp,
-                                                          mystamp,
+                                                          timestamp,
                                                           deviceHeadingAngle)
                             if let headingAngleDataToWrite = headingAngleData.data(using: .utf8) {
                                 self.fileHandlers[self.HEADING_TXT].write(headingAngleDataToWrite)
