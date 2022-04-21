@@ -122,6 +122,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var i:Int = 1
     var sum:Int = 0
     
+    let attitudeHeader = "timestamp,OrientQx,OrientQy,OrientQz,OrientQw \n"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -383,7 +384,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
                             
                             // the device orientation expressed in the quaternion format
-                            let attitudeData = String(format: "%.0f %.6f %.6f %.6f %.6f \n",
+
+                            let attitudeData = String(format: "%.0f,%.6f,%.6f,%.6f,%.6f \n",
                                                       timestamp,
                                                       deviceOrientationQx,
                                                       deviceOrientationQy,
@@ -396,7 +398,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the unbiased rotation rate
-                            let processedGyroData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let processedGyroData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                            timestamp,
                                                            processedGyroDataX,
                                                            processedGyroDataY,
@@ -408,7 +410,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the current gravity vector
-                            let gravityData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let gravityData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                      timestamp,
                                                      gravityGx,
                                                      gravityGy,
@@ -420,7 +422,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the user-generated acceleration vector (without gravity)
-                            let userAccelData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let userAccelData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                        timestamp,
                                                        userAccelDataX,
                                                        userAccelDataY,
@@ -432,7 +434,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the current magnetic field vector
-                            let magneticData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let magneticData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                       timestamp,
                                                       magneticFieldX,
                                                       magneticFieldY,
@@ -444,7 +446,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the heading angle (degrees) relative to the reference frame
-                            let headingAngleData = String(format: "%.0f %.6f \n",
+                            let headingAngleData = String(format: "%.0f,%.6f \n",
                                                           timestamp,
                                                           deviceHeadingAngle)
                             if let headingAngleDataToWrite = headingAngleData.data(using: .utf8) {
@@ -465,8 +467,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let accelerometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
                     let rawAccelDataX = accelerometerData.acceleration.x * self.gravity
                     let rawAccelDataY = accelerometerData.acceleration.y * self.gravity
                     let rawAccelDataZ = accelerometerData.acceleration.z * self.gravity
@@ -481,7 +483,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     // custom queue to save IMU text data
                     self.customQueue.async {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
-                            let rawAccelData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let rawAccelData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                       timestamp,
                                                       rawAccelDataX,
                                                       rawAccelDataY,
@@ -504,8 +506,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let gyroData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
                     //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
@@ -521,7 +523,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     // custom queue to save IMU text data
                     self.customQueue.async {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
-                            let rawGyroData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let rawGyroData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                      timestamp,
                                                      rawGyroDataX,
                                                      rawGyroDataY,
@@ -544,8 +546,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let magnetometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    //let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
@@ -553,7 +555,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     // custom queue to save IMU text data
                     self.customQueue.async {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
-                            let rawMagnetData = String(format: "%.0f %.6f %.6f %.6f \n",
+                            let rawMagnetData = String(format: "%.0f,%.6f,%.6f,%.6f \n",
                                                        timestamp,
                                                        rawMagnetDataX,
                                                        rawMagnetDataY,
@@ -596,7 +598,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     // custom queue to save pedometer data
                     self.customQueue.async {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
-                            let pedoData = String(format: "%.0f %04d %.3f \n",
+                            let pedoData = String(format: "%.0f,%04d,%.3f \n",
                                                      timestamp,
                                                      stepCounter,
                                                      distance)
@@ -622,8 +624,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let barometerData = motion {
-                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let relativeAltitude = barometerData.relativeAltitude.doubleValue
                     let pressure = barometerData.pressure.doubleValue
                     
@@ -632,7 +634,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
                             
                             // the change in altitude (in meters) since the first reported event
-                            let relativeAltitudeData = String(format: "%.0f %.6f \n",
+                            let relativeAltitudeData = String(format: "%.0f,%.6f \n",
                                                               timestamp,
                                                               relativeAltitude)
                             if let relativeAltitudeDataToWrite = relativeAltitudeData.data(using: .utf8) {
@@ -642,7 +644,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             }
                             
                             // the recorded pressure (in kilopascals)
-                            let pressureData = String(format: "%.0f %.6f \n",
+                            let pressureData = String(format: "%.0f,%.6f \n",
                                                       timestamp,
                                                       pressure)
                             if let pressureDataToWrite = pressureData.data(using: .utf8) {
@@ -671,7 +673,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
                         
                         // the battery charge level for the device
-                        let batteryLevelData = String(format: "%.0f %.6f \n",
+                        let batteryLevelData = String(format: "%.0f,%.6f \n",
                                                       timestamp,
                                                       batteryLevel)
                         if let batteryLevelDataToWrite = batteryLevelData.data(using: .utf8) {
@@ -751,12 +753,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         // write current recording time information
-        let timeHeader = "# Created at \(timeToString()) in Burnaby Canada \n"
+        let timeHeader = "# Created at \(timeToString()) somewhere in time. \n"
         for i in 0...(self.numSensor - 1) {
             if let timeHeaderToWrite = timeHeader.data(using: .utf8) {
                 self.fileHandlers[i].write(timeHeaderToWrite)
             } else {
                 os_log("Failed to write data record", log: OSLog.default, type: .fault)
+                return false
+            }
+        }
+
+        if (numSensor == 4) {
+            if let attitudeHeaderToWrite = attitudeHeader.data(using: .utf8) {
+                self.fileHandlers[i].write(attitudeHeaderToWrite)
+            } else {
+                os_log("Failed to write header into file", log: OSLog.default, type: .fault)
                 return false
             }
         }
