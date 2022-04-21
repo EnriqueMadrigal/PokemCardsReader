@@ -11,6 +11,7 @@ import CoreLocation
 import CoreMotion
 import os.log
 import AudioToolbox
+import Foundation
 
 extension Date {
     func currentTimeMillis() -> Int64 {
@@ -110,6 +111,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     let mulSecondToNanoSecond: Double = 1000000000
+    let jimsSecond: Int = 1000
     
     
     // text file input & output
@@ -336,7 +338,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 // optional binding for safety
                 if let deviceMotion = motion {
                     //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
+                    // let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
+                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let deviceOrientationRx = deviceMotion.attitude.pitch
                     let deviceOrientationRy = deviceMotion.attitude.roll
                     let deviceOrientationRz = deviceMotion.attitude.yaw
