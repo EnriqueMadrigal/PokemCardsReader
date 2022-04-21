@@ -270,8 +270,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // optional binding for safety
         if let latestLocation = manager.location {
             //let mystamp = Date().currentTimeMillis()
-            //let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
-            let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+            let timestamp = latestLocation.timestamp.timeIntervalSince1970 * self.mulSecondToNanoSecond
+            //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
             let latitude = latestLocation.coordinate.latitude
             let longitude = latestLocation.coordinate.longitude
             let horizontalAccuracy = latestLocation.horizontalAccuracy
@@ -336,8 +336,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let deviceMotion = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = deviceMotion.timestamp * self.mulSecondToNanoSecond
                     let mystamp = Date().currentTimeMillis()
                     let deviceOrientationRx = deviceMotion.attitude.pitch
                     let deviceOrientationRy = deviceMotion.attitude.roll
@@ -469,8 +469,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let accelerometerData = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = accelerometerData.timestamp * self.mulSecondToNanoSecond
                     let rawAccelDataX = accelerometerData.acceleration.x * self.gravity
                     let rawAccelDataY = accelerometerData.acceleration.y * self.gravity
                     let rawAccelDataZ = accelerometerData.acceleration.z * self.gravity
@@ -509,8 +509,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 // optional binding for safety
                 if let gyroData = motion {
                     //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = gyroData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
                     let rawGyroDataZ = gyroData.rotationRate.z
@@ -548,8 +548,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let magnetometerData = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = magnetometerData.timestamp * self.mulSecondToNanoSecond
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
@@ -626,8 +626,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 // optional binding for safety
                 if let barometerData = motion {
-                    let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
-                    //let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
+                    //let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
+                    let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
                     let relativeAltitude = barometerData.relativeAltitude.doubleValue
                     let pressure = barometerData.pressure.doubleValue
                     
