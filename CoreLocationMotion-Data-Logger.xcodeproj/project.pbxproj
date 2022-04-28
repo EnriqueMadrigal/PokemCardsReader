@@ -13,6 +13,7 @@
 		2EB6F609229E752D009915A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F607229E752D009915A4 /* Main.storyboard */; };
 		2EB6F60B229E752E009915A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F60A229E752E009915A4 /* Assets.xcassets */; };
 		2EB6F60E229E752E009915A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB6F60C229E752E009915A4 /* LaunchScreen.storyboard */; };
+		69B491726B5FBC9E3C750478 /* add_sensor_doc.py in Resources */ = {isa = PBXBuildFile; fileRef = 69B49EF313B4B23C8B6B43B8 /* add_sensor_doc.py */; };
 		8889D9E72810772D000DBE9B /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8889D9E62810772D000DBE9B /* Haptics.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		2EB6F60A229E752E009915A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2EB6F60D229E752E009915A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2EB6F60F229E752E009915A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		69B49EF313B4B23C8B6B43B8 /* add_sensor_doc.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = add_sensor_doc.py; sourceTree = "<group>"; };
 		8889D9E62810772D000DBE9B /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -44,6 +46,7 @@
 			children = (
 				2EB6F602229E752D009915A4 /* CoreLocationMotion-Data-Logger */,
 				2EB6F601229E752D009915A4 /* Products */,
+				69B498A3F1F964581ACD3BA9 /* scripts */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +71,14 @@
 				8889D9E62810772D000DBE9B /* Haptics.swift */,
 			);
 			path = "CoreLocationMotion-Data-Logger";
+			sourceTree = "<group>";
+		};
+		69B498A3F1F964581ACD3BA9 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				69B49EF313B4B23C8B6B43B8 /* add_sensor_doc.py */,
+			);
+			path = scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +142,7 @@
 				2EB6F60E229E752E009915A4 /* LaunchScreen.storyboard in Resources */,
 				2EB6F60B229E752E009915A4 /* Assets.xcassets in Resources */,
 				2EB6F609229E752D009915A4 /* Main.storyboard in Resources */,
+				69B491726B5FBC9E3C750478 /* add_sensor_doc.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,13 +303,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XSS4B484F;
+				DEVELOPMENT_TEAM = M758N8AL3Y;
 				INFOPLIST_FILE = "CoreLocationMotion-Data-Logger/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pjinkim.CoreLocationMotion-Data-Logger";
+				PRODUCT_BUNDLE_IDENTIFIER = iosdatalogger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -309,13 +321,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XSS4B484F;
+				DEVELOPMENT_TEAM = M758N8AL3Y;
 				INFOPLIST_FILE = "CoreLocationMotion-Data-Logger/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pjinkim.CoreLocationMotion-Data-Logger";
+				PRODUCT_BUNDLE_IDENTIFIER = iosdatalogger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
