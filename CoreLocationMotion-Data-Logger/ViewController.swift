@@ -45,34 +45,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var hapticsButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
     
-    @IBOutlet weak var latitudeLabel: UILabel!
-    @IBOutlet weak var longitudeLabel: UILabel!
-    @IBOutlet weak var horizontalAccuracyLabel: UILabel!
-    @IBOutlet weak var altitudeLabel: UILabel!
-    @IBOutlet weak var buildingFloorLabel: UILabel!
-    @IBOutlet weak var verticalAccuracyLabel: UILabel!
-    
-    @IBOutlet weak var rxLabel: UILabel!
-    @IBOutlet weak var ryLabel: UILabel!
-    @IBOutlet weak var rzLabel: UILabel!
-    @IBOutlet weak var mxLabel: UILabel!
-    @IBOutlet weak var myLabel: UILabel!
-    @IBOutlet weak var mzLabel: UILabel!
-    
-    @IBOutlet weak var axLabel: UILabel!
-    @IBOutlet weak var ayLabel: UILabel!
-    @IBOutlet weak var azLabel: UILabel!
-    
-    @IBOutlet weak var wxLabel: UILabel!
-    @IBOutlet weak var wyLabel: UILabel!
-    @IBOutlet weak var wzLabel: UILabel!
-    
-    @IBOutlet weak var stepCounterLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
-    
     var hapticManager = HapticManager()
     
     // constants for collecting data
+    // TODO: Do I need this?
     let numSensor = 14
     let GYRO_TXT = 0
     let GYRO_UNCALIB_TXT = 1
@@ -115,6 +91,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     
     // text file input & output
+    // TODO: Remove all the text file stuff
+    // TODO: Save data to class instead of file
+    // TODO: Send data to firestore instead of file at end
+    // TODO: Add ability to record real or not
+    // TODO: Add ability to recrd holo or not
+    // TODO: Add ability to record session automatically (set a time and have it run that long
+    // TODO: Log phone meta
     var fileHandlers = [FileHandle]()
     var fileURLs = [URL]()
     var fileNames: [String] = ["gyro.txt", "gyro_uncalib.txt", "acce.txt", "linacce.txt", "gravity.txt", "magnet.txt", "magnet_uncalib.txt", "game_rv.txt", "gps.txt", "step.txt", "heading.txt", "height.txt", "pressure.txt", "battery.txt"]
@@ -220,6 +203,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             
             customQueue.async {
+                // Note: I think this is where i need to upload data to firestore after capture
                 self.isRecording = false
                 if (self.fileHandlers.count == self.numSensor) {
                     for handler in self.fileHandlers {
@@ -232,31 +216,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }
             
-            // initialize UI on the screen
-            self.latitudeLabel.text = String(format:"%.3f", self.defaultValue)
-            self.longitudeLabel.text = String(format:"%.3f", self.defaultValue)
-            self.horizontalAccuracyLabel.text = String(format:"%.3f", self.defaultValue)
-            self.altitudeLabel.text = String(format:"%.2f", self.defaultValue)
-            self.buildingFloorLabel.text = String(format:"%02df", self.defaultValue)
-            self.verticalAccuracyLabel.text = String(format:"%.3f", self.defaultValue)
-            
-            self.rxLabel.text = String(format:"%.3f", self.defaultValue)
-            self.ryLabel.text = String(format:"%.3f", self.defaultValue)
-            self.rzLabel.text = String(format:"%.3f", self.defaultValue)
-            self.mxLabel.text = String(format:"%.3f", self.defaultValue)
-            self.myLabel.text = String(format:"%.3f", self.defaultValue)
-            self.mzLabel.text = String(format:"%.3f", self.defaultValue)
-            
-            self.axLabel.text = String(format:"%.3f", self.defaultValue)
-            self.ayLabel.text = String(format:"%.3f", self.defaultValue)
-            self.azLabel.text = String(format:"%.3f", self.defaultValue)
-
-            self.wxLabel.text = String(format:"%.3f", self.defaultValue)
-            self.wyLabel.text = String(format:"%.3f", self.defaultValue)
-            self.wzLabel.text = String(format:"%.3f", self.defaultValue)
-            
-            self.stepCounterLabel.text = String(format:"%04d", self.defaultValue)
-            self.distanceLabel.text = String(format:"%.1f", self.defaultValue)
             
             self.startStopButton.setTitle("Start", for: .normal)
             self.statusLabel.text = "Ready"
@@ -284,15 +243,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 buildingFloor = temp.level
             }
             
-            // dispatch queue to display UI
-            DispatchQueue.main.async {
-                self.latitudeLabel.text = String(format:"%.3f", latitude)
-                self.longitudeLabel.text = String(format:"%.3f", longitude)
-                self.horizontalAccuracyLabel.text = String(format:"%.3f", horizontalAccuracy)
-                self.altitudeLabel.text = String(format:"%.2f", altitude)
-                self.verticalAccuracyLabel.text = String(format:"%.3f", verticalAccuracy)
-                self.buildingFloorLabel.text = String(format:"%02d", buildingFloor)
-            }
             
             // custom queue to save GPS location data
             self.customQueue.async {
@@ -367,17 +317,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let magneticFieldZ = deviceMotion.magneticField.field.z
                     
                     let deviceHeadingAngle = deviceMotion.heading
-                    
-                    // dispatch queue to display UI
-                    DispatchQueue.main.async {
-                        self.rxLabel.text = String(format:"%.3f", deviceOrientationRx)
-                        self.ryLabel.text = String(format:"%.3f", deviceOrientationRy)
-                        self.rzLabel.text = String(format:"%.3f", deviceOrientationRz)
-                        
-                        self.mxLabel.text = String(format:"%.3f", magneticFieldX)
-                        self.myLabel.text = String(format:"%.3f", magneticFieldY)
-                        self.mzLabel.text = String(format:"%.3f", magneticFieldZ)
-                    }
+
                     
                     // custom queue to save IMU text data
                     self.customQueue.async {
@@ -473,13 +413,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let rawAccelDataY = accelerometerData.acceleration.y * self.gravity
                     let rawAccelDataZ = accelerometerData.acceleration.z * self.gravity
                     
-                    // dispatch queue to display UI
-                    DispatchQueue.main.async {
-                        self.axLabel.text = String(format:"%.3f", rawAccelDataX)
-                        self.ayLabel.text = String(format:"%.3f", rawAccelDataY)
-                        self.azLabel.text = String(format:"%.3f", rawAccelDataZ)
-                    }
-                    
                     // custom queue to save IMU text data
                     self.customQueue.async {
                         if ((self.fileHandlers.count == self.numSensor) && self.isRecording) {
@@ -512,13 +445,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
                     let rawGyroDataZ = gyroData.rotationRate.z
-                    
-                    // dispatch queue to display UI
-                    DispatchQueue.main.async {
-                        self.wxLabel.text = String(format:"%.3f", rawGyroDataX)
-                        self.wyLabel.text = String(format:"%.3f", rawGyroDataY)
-                        self.wzLabel.text = String(format:"%.3f", rawGyroDataZ)
-                    }
+
                     
                     // custom queue to save IMU text data
                     self.customQueue.async {
@@ -587,12 +514,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     var distance: Double = -100
                     if let temp = pedometerData.distance {
                         distance = temp.doubleValue
-                    }
-                    
-                    // dispatch queue to display UI
-                    DispatchQueue.main.async {
-                        self.stepCounterLabel.text = String(format:"%04d", stepCounter)
-                        self.distanceLabel.text = String(format:"%.1f", distance)
                     }
                     
                     // custom queue to save pedometer data
