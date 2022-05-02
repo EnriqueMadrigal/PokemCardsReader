@@ -70,7 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var sensorData = SensorData()
     // TODO: Send data to firestore instead of file at end
     // TODO: Add ability to record real or not
-    // TODO: Add ability to recrd holo or not
+    // TODO: Add ability to record holo or not
     // TODO: Add ability to record session automatically (set a time and have it run that long
     // TODO: Log phone meta
     var i: Int = 1
@@ -141,8 +141,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 batteryLevelTimer.invalidate()
             }
             customQueue.async {
-                // Note: I think this is where i need to upload data to firestore after capture
                 self.isRecording = false
+                // TODO: Convert sensorData struct to dict
+                let sensorDataUpload = self.sensorData.toDict
+                print("struff")
+                // TODO: Send dict to firestore
             }
             startStopButton.setTitle("Start", for: .normal)
             statusLabel.text = "Ready"
@@ -249,8 +252,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             // store unser-generated acceleration vector w/ out gravity (lin_acc)
                             self.sensorData.line_acc.timestamps.append(timestamp)
                             self.sensorData.line_acc.x.append(userAccelDataX)
-                            self.sensorData.line_acc.x.append(userAccelDataY)
-                            self.sensorData.line_acc.x.append(userAccelDataZ)
+                            self.sensorData.line_acc.y.append(userAccelDataY)
+                            self.sensorData.line_acc.z.append(userAccelDataZ)
                             // store magnetic field vector
                             self.sensorData.magnet.timestamps.append(timestamp)
                             self.sensorData.magnet.x.append(magneticFieldX)

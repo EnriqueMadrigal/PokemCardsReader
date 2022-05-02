@@ -1,3 +1,5 @@
+import Foundation
+
 struct SensorData {
     var start_time: Double = 0
     var end_time: Double = 0
@@ -16,6 +18,13 @@ struct SensorData {
     var magnet: TripletSensorData = TripletSensorData()
     var magnet_uncal: TripletSensorData = TripletSensorData()
     var pressure: ScalarSensorData = ScalarSensorData()
+    
+    var toDict: [String: Any] {
+        return [
+            "start_time": start_time,
+            "acc": line_acc.toDict
+        ]
+    }
 }
 
 struct ScalarSensorData {
@@ -28,6 +37,15 @@ struct TripletSensorData {
     var x: [Double] = []
     var y: [Double] = []
     var z: [Double] = []
+
+    var toDict: [String: Any] {
+        return [
+            "timestamps": timestamps,
+            "x": x,
+            "y": y,
+            "z": z
+        ]
+    }
 }
 
 struct QuaternionTripletSensorData {
