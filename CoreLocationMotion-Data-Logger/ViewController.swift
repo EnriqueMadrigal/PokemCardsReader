@@ -143,6 +143,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             customQueue.async {
                 self.isRecording = false
                 // TODO: Convert sensorData struct to dict
+                self.sensorData.total_time = Int(self.secondCounter)
                 let sensorDataUpload = self.sensorData.toDict
                 print("struff")
                 // TODO: Send dict to firestore
