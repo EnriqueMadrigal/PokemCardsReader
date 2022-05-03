@@ -41,7 +41,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var startStopButton: UIButton!
     @IBOutlet weak var hapticsButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-
+    @IBOutlet weak var isRealButton: UISegmentedControl!
+    @IBOutlet weak var isHoloButton: UISegmentedControl!
+    
     var hapticManager = HapticManager()
 
     let sampleFrequency: TimeInterval = 200
@@ -71,7 +73,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // TODO: Send data to firestore instead of file at end
     // TODO: Add ability to record real or not
     // TODO: Add ability to record holo or not
-    // TODO: Add ability to record session automatically (set a time and have it run that long
+    // TODO: Add ability to record session automatically (set a time and have it run that long)
     // TODO: Log phone meta
     var i: Int = 1
     var sum: Int = 0
@@ -111,7 +113,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         altimeter.stopRelativeAltitudeUpdates()
     }
-
+    
+    @IBAction func isRealClicked(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            sensorData.is_real = true
+        case 1:
+            sensorData.is_real = false
+        default:
+            break
+        }
+    }
+    
+    @IBAction func isHoloClicked(sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            sensorData.is_holo = false
+        case 1:
+            sensorData.is_holo = true
+        default:
+            break
+        }
+    }
+    
     // when the Start/Stop button is pressed
     @IBAction func startStopButtonPressed(_ sender: UIButton) {
         if (isRecording == false) {
@@ -142,10 +166,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             customQueue.async {
                 self.isRecording = false
-                // TODO: Convert sensorData struct to dict
                 self.sensorData.total_time = Int(self.secondCounter)
                 let sensorDataUpload = self.sensorData.toDict
-                print("struff")
                 // TODO: Send dict to firestore
             }
             startStopButton.setTitle("Start", for: .normal)
