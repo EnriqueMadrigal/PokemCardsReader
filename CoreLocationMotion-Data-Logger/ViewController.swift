@@ -177,6 +177,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     _ = user.uid
                     db.collection("haptic").addDocument(data: sensorDataUpload)
                     os_log("Successfully saved data to Firestore", type: .info)
+                    self.sensorData = SensorData()
                 }
             }
             startStopButton.setTitle("Start", for: .normal)
