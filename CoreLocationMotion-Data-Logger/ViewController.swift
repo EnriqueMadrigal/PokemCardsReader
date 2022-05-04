@@ -12,6 +12,8 @@ import CoreMotion
 import os.log
 import AudioToolbox
 import Foundation
+import Firebase
+import FirebaseAuth
 
 extension Date {
     func currentTimeMillis() -> Int64 {
@@ -71,8 +73,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // text file input & output
     var sensorData = SensorData()
     // TODO: Send data to firestore instead of file at end
-    // TODO: Add ability to record real or not
-    // TODO: Add ability to record holo or not
     // TODO: Add ability to record session automatically (set a time and have it run that long)
     // TODO: Log phone meta
     var i: Int = 1
@@ -168,7 +168,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.isRecording = false
                 self.sensorData.total_time = Int(self.secondCounter)
                 let sensorDataUpload = self.sensorData.toDict
-                // TODO: Send dict to firestore
+                let db = Firestore.firestore()
+                Auth.auth().signInAnonymously { authResult, error in
+                    guard let user = authResult?.user else { return }
+                    let isAnonymous = user.isAnonymous
+                    let uid = user.uid
+                    db.collection("haptic").addDocument(data: sensorDataUpload)
+                }
+
             }
             startStopButton.setTitle("Start", for: .normal)
             statusLabel.text = "Ready"
