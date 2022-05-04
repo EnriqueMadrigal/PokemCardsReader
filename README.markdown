@@ -1,5 +1,7 @@
 # Core Location Motion Data Logger #
 
+## PROJECT DOCUMENTATION: https://www.notion.so/iOS-Data-Logger-App-168ebdd03ffd473e9760c36d09a57804
+
 This is a simple application to allow the easy capture of GPS/IMU data on iOS devices for offline use.
 I wanted to play around with data from GPS and IMU with Core Location and Core Motion frameworks in Swift 5.0 for iPhone Xs.
 
