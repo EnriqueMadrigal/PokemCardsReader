@@ -15,6 +15,9 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
+// TODO: Add ability to record session automatically (set a time and have it run that long)
+// TODO: Log phone meta
+
 extension Date {
     func currentTimeMillis() -> Int64 {
         Int64(timeIntervalSince1970 * 1000)
@@ -70,11 +73,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let mulSecondToNanoSecond: Double = 1000000000
     let jimsSecond: Int = 1000
 
-    // text file input & output
     var sensorData = SensorData()
-    // TODO: Send data to firestore instead of file at end
-    // TODO: Add ability to record session automatically (set a time and have it run that long)
-    // TODO: Log phone meta
     var i: Int = 1
     var sum: Int = 0
 
@@ -161,7 +160,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         } else {
             os_log("Stopping recording", type: .info)
-            // stop recording and share the recorded text file
             if (recordingTimer.isValid) {
                 recordingTimer.invalidate()
             }
@@ -175,12 +173,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let db = Firestore.firestore()
                 Auth.auth().signInAnonymously { authResult, error in
                     guard let user = authResult?.user else { return }
-                    let isAnonymous = user.isAnonymous
-                    let uid = user.uid
+                    _ = user.isAnonymous
+                    _ = user.uid
                     db.collection("haptic").addDocument(data: sensorDataUpload)
                     os_log("Successfully saved data to Firestore", type: .info)
                 }
-
             }
             startStopButton.setTitle("Start", for: .normal)
             statusLabel.text = "Ready"
@@ -204,7 +201,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             if let temp = latestLocation.floor {
                 buildingFloor = temp.level
             }
-            // Note: GPS data queue
             customQueue.async {
                 if (self.isRecording) {
                     // store gps data
@@ -264,8 +260,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let magneticFieldZ = deviceMotion.magneticField.field.z
 
                     let deviceHeadingAngle = deviceMotion.heading
-
-                    // custom queue to save IMU text data
                     self.customQueue.async {
                         if (self.isRecording) {
                             // store attitude data
@@ -312,7 +306,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let rawAccelDataX = accelerometerData.acceleration.x * self.gravity
                     let rawAccelDataY = accelerometerData.acceleration.y * self.gravity
                     let rawAccelDataZ = accelerometerData.acceleration.z * self.gravity
-                    // custom queue to save IMU text data
                     self.customQueue.async {
                         if (self.isRecording) {
                             // store raw acceleration data
@@ -336,7 +329,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let rawGyroDataX = gyroData.rotationRate.x
                     let rawGyroDataY = gyroData.rotationRate.y
                     let rawGyroDataZ = gyroData.rotationRate.z
-                    // custom queue to save IMU text data
                     self.customQueue.async {
                         if (self.isRecording) {
                             // store raw (uncalibrated) gyroscope data
@@ -349,11 +341,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
-
         // 4) update raw magnetometer data
         if (!motionManager.isMagnetometerActive) {
             motionManager.startMagnetometerUpdates(to: OperationQueue.main) { (motion: CMMagnetometerData?, error: Error?) in
-
                 // optional binding for safety
                 if let magnetometerData = motion {
                     let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
@@ -361,8 +351,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let rawMagnetDataX = magnetometerData.magneticField.x
                     let rawMagnetDataY = magnetometerData.magneticField.y
                     let rawMagnetDataZ = magnetometerData.magneticField.z
-
-                    // custom queue to save IMU text data
                     self.customQueue.async {
                         if (self.isRecording) {
                             // store raw (uncalibrated) magnetometer data
@@ -386,7 +374,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     //let timestamp = barometerData.timestamp * self.mulSecondToNanoSecond
                     let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                     let pressure = barometerData.pressure.doubleValue
-                    // custom queue to save barometric text data
                     self.customQueue.async {
                         if (self.isRecording) {
                             // store recorded pressure (in kilopascals)
@@ -405,7 +392,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.batteryLevelTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (Timer) -> Void in
                 let timestamp = Date().timeIntervalSince1970 * self.mulSecondToNanoSecond
                 let batteryLevel = UIDevice.current.batteryLevel
-
                 self.customQueue.async {
                     if (self.isRecording) {
                         // store the battery charge level for the device
@@ -429,15 +415,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         if (motionManager.isMagnetometerActive) {
             motionManager.stopMagnetometerUpdates()
-        }
-    }
-
-    // some useful functions
-    private func errorMsg(msg: String) {
-        DispatchQueue.main.async {
-            let fileAlert = UIAlertController(title: "CoreLocationMotion-Data-Logger", message: msg, preferredStyle: .alert)
-            fileAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(fileAlert, animated: true, completion: nil)
         }
     }
 }
