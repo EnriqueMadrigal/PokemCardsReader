@@ -115,6 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func isRealClicked(_ sender: UISegmentedControl) {
+        os_log("isReal UI segment clicked", type: .info)
         switch sender.selectedSegmentIndex {
         case 0:
             sensorData.is_real = true
@@ -126,6 +127,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func isHoloClicked(sender: UISegmentedControl) {
+        os_log("isHolo UI segment clicked", type: .info)
         switch sender.selectedSegmentIndex {
         case 0:
             sensorData.is_holo = false
@@ -139,6 +141,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // when the Start/Stop button is pressed
     @IBAction func startStopButtonPressed(_ sender: UIButton) {
         if (isRecording == false) {
+            os_log("Starting recording", type: .info)
             // start GPS/IMU data recording
             customQueue.async {
                 DispatchQueue.main.async {
@@ -157,6 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.craptics()
             }
         } else {
+            os_log("Stopping recording", type: .info)
             // stop recording and share the recorded text file
             if (recordingTimer.isValid) {
                 recordingTimer.invalidate()
@@ -174,6 +178,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let isAnonymous = user.isAnonymous
                     let uid = user.uid
                     db.collection("haptic").addDocument(data: sensorDataUpload)
+                    os_log("Successfully saved data to Firestore", type: .info)
                 }
 
             }
